@@ -62,7 +62,7 @@ module.exports = class Controller {
     }
 
     static getMyRequest(req, res, next){
-        Request.findAll({where:{"consumer_id": req.currentUser.id}})
+        Request.findAll({where:{"consumer_id": req.currentUser.id}, include: 'Category'})
         .then(data => {
             console.log(data)
             res.status(200).json({message: "success", data})
