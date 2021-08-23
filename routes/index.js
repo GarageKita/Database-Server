@@ -5,6 +5,8 @@ const CategoryC = require('../controllers/categoryController')
 const RequestC = require('../controllers/requestController')
 const categoryRoute = require('./categories')
 const requestRoute = require('./requests')
+const productRoute = require('./products')
+
 const {authentication, adminAuth, authorization} = require('../middlewares/auth')
 
 // user
@@ -14,9 +16,6 @@ router.put('/user/:id', UserC.putUser)
 
 router.use('/categories', categoryRoute)
 router.use('/requests', requestRoute)
-
-// general
-router.get('/requests', RequestC.getRequest)
-
+router.use('/products', productRoute)
 
 module.exports = router
