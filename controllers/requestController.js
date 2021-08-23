@@ -3,7 +3,7 @@ const {Request} = require('../models/index')
 module.exports = class Controller {
     static getRequest(req, res, next){
         if(req.params.id){
-            Request.findOne({where: {id: req.params.id}})
+            Request.findOne({where: {id: req.params.id}, include: 'Category'})
             .then(data => {
                 if(req.currentUser){
                     if(data.id === req.currentUser.id){
@@ -22,7 +22,7 @@ module.exports = class Controller {
             .catch(err => next(err))
         }
         else {
-            Request.findAll()
+            Request.findAll({include: 'Category'})
             .then(data => {
                 data.forEach(el => {
                     delete el.dataValues.budgetCeil
@@ -65,7 +65,7 @@ module.exports = class Controller {
         Request.findAll({where:{"consumer_id": req.currentUser.id}})
         .then(data => {
             console.log(data)
-            res.status(200).json({message: "test", data})
+            res.status(200).json({message: "success", data})
         })
         .catch(err => next(err))
     }
