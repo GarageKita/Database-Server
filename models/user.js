@@ -37,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     role: DataTypes.STRING,
-    isActivated: DataTypes.BOOLEAN
+    isActivated: DataTypes.BOOLEAN,
+    uniqueCode: DataTypes.STRING
   }, {
     hooks: {
       beforeCreate: user =>{
