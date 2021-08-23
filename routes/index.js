@@ -12,9 +12,9 @@ const offerRoute = require('./offer')
 const {authentication, adminAuth, authorization} = require('../middlewares/auth')
 
 // user
-router.post('/login', authentication, adminAuth, UserC.login)
+router.post('/login', UserC.login)
 router.post('/register', UserC.register)
-router.put('/user/:id', UserC.putUser)
+router.put('/user/:id', authentication, adminAuth, UserC.putUser)
 
 router.use('/categories', categoryRoute)
 router.use('/requests', requestRoute)
