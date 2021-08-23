@@ -6,6 +6,7 @@ const RequestC = require('../controllers/requestController')
 const categoryRoute = require('./categories')
 const requestRoute = require('./requests')
 const productRoute = require('./products')
+const bidRoute = require('./bids')
 
 const {authentication, adminAuth, authorization} = require('../middlewares/auth')
 
@@ -17,5 +18,6 @@ router.put('/user/:id', UserC.putUser)
 router.use('/categories', categoryRoute)
 router.use('/requests', requestRoute)
 router.use('/products', productRoute)
+router.use('/bids', bidRoute)
 
 module.exports = router
