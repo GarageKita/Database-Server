@@ -34,6 +34,7 @@ module.exports = class Controller {
     }
 
     static postRequest(req, res, next){
+        console.log('inpost')
         let newRequest = req.body
         if (!newRequest.qty) newRequest.qty = 1
         newRequest.consumer_id = req.currentUser.id
