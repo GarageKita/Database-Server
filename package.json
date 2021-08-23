@@ -1,0 +1,31 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./app.js",
+  "scripts": {
+    "setup:dev": "sequelize-cli db:drop&&sequelize-cli db:create&&sequelize-cli db:migrate ",
+    "setup:test": "set NODE_ENV=test&& sequelize-cli db:drop&&sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "test": "set NODE_ENV=test&&jest --runInBand --forceExit --detectOpenHandles --coverage",
+    "dev": "set NODE_ENV=development&&nodemon ./bin/server.js",
+    "start": "set NODE_ENV=production&&node ./bin/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "google-auth-library": "^7.3.0",
+    "jest": "^27.0.5",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.6.0",
+    "sequelize": "^6.6.4",
+    "sequelize-cli": "^6.2.0",
+    "superagent": "^6.1.0",
+    "supertest": "^6.1.3"
+  }
+}
