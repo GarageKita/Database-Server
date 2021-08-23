@@ -15,6 +15,7 @@ const {authentication, adminAuth, authorization} = require('../middlewares/auth'
 // user
 router.post('/login', UserC.login)
 router.post('/register', UserC.register)
+router.put('/user/:id', UserC.putUser)
 
 router.use('/categories', categoryRoute)
 router.use('/requests', requestRoute)

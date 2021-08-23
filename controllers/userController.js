@@ -23,7 +23,6 @@ class Controller{
     }
     
     static register(req, res, next){
-        console.log('enter')
         if (!req.body.email || !req.body.password) throw ({name:badRequest, message:"No username or password"})
         User.create(req.body)
             .then(() => {
@@ -33,6 +32,12 @@ class Controller{
             .catch(error => {
                 next(error)
             })
+    }
+
+    static putUser(req, res, next) {
+        User.update(req.body, {where: {id: req.params.id}})
+            .then(() => res.status(200).json({message: 'success'}))
+            .catch(error => next(error))
     }
 }
 
