@@ -9,8 +9,8 @@ router.get('/:id', function(req, res, next) {
     if(req.headers.access_token) {authentication(req, res, next)}
     else {next()}
 }, ProductC.getProducts)
-router.post('/', authentication, adminAuth, ProductC.postProduct)
-router.put('/:id', authentication, adminAuth, ProductC.putProduct)
-router.delete('/:id', authentication, adminAuth, ProductC.delProduct)
+router.post('/', authentication, ProductC.postProduct)
+router.put('/:id', authentication, ProductC.putProduct)
+router.delete('/:id', authentication, ProductC.delProduct)
 
 module.exports = router

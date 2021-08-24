@@ -9,8 +9,8 @@ router.get('/:id', function(req, res, next) {
     if(req.headers.access_token) {authentication(req, res, next)}
     else {next()}
 }, RequestC.getRequest)
-router.post('/', authentication, adminAuth, RequestC.postRequest)
-router.put('/:id', authentication, adminAuth, RequestC.putRequest)
-router.delete('/:id', authentication, adminAuth, RequestC.delRequest)
+router.post('/', authentication, RequestC.postRequest)
+router.put('/:id', authentication, RequestC.putRequest)
+router.delete('/:id', authentication, RequestC.delRequest)
 
 module.exports = router
