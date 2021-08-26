@@ -1,5 +1,5 @@
 const {jwtDecrypt} = require("../helpers/jwt")
-const {User, Cart} = require('../models/index.js')
+const {User, Product, Request} = require('../models/index.js')
 
 const authentication = (req, res, next) =>{
     console.log("in auth2")
@@ -35,6 +35,24 @@ const authorization = (req, res, next) => {
 const adminAuth = (req, res, next) =>{
     if (req.currentUser.role == "admin") {next()}
     else (next({name: "unauthorized"}))
+}
+
+const prodAuth = (req, res, next) => {
+    Product.findOne({where:{id: req.params.id}})
+        .then(prod => {
+            if (prod.seller_id === req.currentUser.id) {next()}
+            else throw ({name: "unauthorized", message: "You may only modify your own products"})
+        })
+        .catch(err => next(err))
+}
+
+const reqAuth = (req, res, next) => {
+    Request.findOne({where:{id: req.params.id}})
+        .then(request => {
+            if (request.consumer_id === req.currentUser.id) {next()}
+            else throw ({name: "unauthorized", message: "You may only modify your own requests"})
+        })
+        .catch(err => next(err))
 }
 
 module.exports = {authentication, adminAuth, authorization}
