@@ -38,25 +38,30 @@ const adminAuth = (req, res, next) =>{
 }
 
 const prodAuth = (req, res, next) => {
-    Product.findOne({where:{id: req.params.id}})
-        .then(prod => {
-            if (prod.seller_id === req.currentUser.id) {next()}
-            else throw ({name: "unauthorized", message: "You may only modify your own products"})
-        })
-        .catch(err => next(err))
+    if (req.currentUser.role === "admin") {next()}
+    else (
+        Product.findOne({where:{id: req.params.id}})
+            .then(prod => {
+                if (prod.seller_id === req.currentUser.id) {next()}
+                else throw ({name: "unauthorized", message: "You may only modify your own products"})
+            })
+            .catch(err => next(err))
+    )
 }
 
 const reqAuth = (req, res, next) => {
-    Request.findOne({where:{id: req.params.id}})
-        .then(request => {
-            if (request.consumer_id === req.currentUser.id) {next()}
-            else throw ({name: "unauthorized", message: "You may only modify your own requests"})
-        })
-        .catch(err => next(err))
+    if (req.currentUser.role === "admin") {next()}
+    else (
+        Request.findOne({where:{id: req.params.id}})
+            .then(request => {
+                if (request.consumer_id === req.currentUser.id) {next()}
+                else throw ({name: "unauthorized", message: "You may only modify your own requests"})
+            })
+            .catch(err => next(err))
+    )
 }
 
 const bidAuth = (req, res, next) => {
-    console.log('in here')
     if (req.currentUser.role === "admin") {next()}
     else (
         Bid.findOne({where:{id: req.params.id}})
@@ -70,13 +75,15 @@ const bidAuth = (req, res, next) => {
 }
 
 const offAuth = (req, res, next) => {
-    if (req.currentUser.role == "admin") {next()}
-    Offer.findOne({where:{id: req.params.id}})
-        .then(data => {
-            if (data.seller_id === req.currentUser.id) {next()}
-            else throw ({name: "unauthorized", message: "You may only modify your own requests"})
-        })
-        .catch(err => next(err))
+    if (req.currentUser.role === "admin") {next()}
+    else (
+        Offer.findOne({where:{id: req.params.id}})
+            .then(data => {
+                if (data.seller_id === req.currentUser.id) {next()}
+                else throw ({name: "unauthorized", message: "You may only modify your own requests"})
+            })
+            .catch(err => next(err))
+    )
 }
 
 module.exports = {authentication, adminAuth, bidAuth, prodAuth, reqAuth, offAuth, authorization}

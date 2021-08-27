@@ -19,13 +19,13 @@ app.use((err, req, res, next) => {
       break;
 
     case "SequelizeForeignKeyConstraintError":
-      err.message = "Tag or product is not found"
     case "notFound":
       statusCode = 404
+      err.message = "notFound"
       break;
 
     case "unauthorized":
-      err.message = "User does not have permission"
+      err.message = err.message? err.message : "User does not have permission"
       statusCode = 401
       break;
 

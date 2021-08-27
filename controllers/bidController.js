@@ -11,7 +11,6 @@ class Controller {
             .catch(err => next(err))
     }
     static putBid(req, res, next){
-        console.log(req.currentUser.id)
         Bid.update(req.body,{where: {id: req.params.id}, returning:true})
             .then((data) => {
                 if(data[0] == 0) throw {name: "notFound", message: "Category not found"}

@@ -6,7 +6,7 @@ class Controller {
         newOffer.request_id = req.params.id
         newOffer.seller_id = req.currentUser.id
         newOffer.status = "pending"
-        Product.findOne({where: {product_id: newOffer.product_id}})
+        Product.findOne({where: {id: newOffer.product_id}})
             .then(data => {
                 if (data.seller_id === newOffer.seller_id) return (1)
                 else throw {name: "unauthorized", message:"you can only offer your own products"}
@@ -17,9 +17,9 @@ class Controller {
         }
 
     static putOffer(req, res, next){
-        Product.findOne({where: {product_id: newOffer.product_id}})
+        Product.findOne({where: {id: req.body.product_id}})
             .then(data => {
-                if (data.seller_id === newOffer.seller_id) return (1)
+                if (data.seller_id === req.body.seller_id) return (1)
                 else throw {name: "unauthorized", message:"you can only offer your own products"}
             })
             .then (() => Offer.update(req.body,{where: {id: req.params.id}, returning:true}))
@@ -36,7 +36,7 @@ class Controller {
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }
-    
+
     static getMyOffer(req, res, next){
         Offer.findAll({where: {seller_id: req.currentUser.id}})
         .then(data => res.status(200).json({message: "success", data}))
