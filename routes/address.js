@@ -6,6 +6,7 @@ const {authentication, adminAuth, authorization} = require('../middlewares/auth'
 router.post('/', authentication, AddressC.postAddress)
 router.put('/:id', authentication, AddressC.putAddress)
 router.get('/myaddress', authentication, AddressC.getMyAddress)
+router.get('/:id', authentication, AddressC.getById)
 router.delete('/:id', authentication, AddressC.delAddress)
 
 

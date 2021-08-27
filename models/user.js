@@ -3,6 +3,7 @@ const {hash} = require('../helpers/bcrypt')
 const {
   Model
 } = require('sequelize');
+const { use } = require('../routes');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -37,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     role: DataTypes.STRING,
+    username: DataTypes.STRING,
     isActivated: DataTypes.BOOLEAN,
     uniqueCode: DataTypes.STRING
   }, {
@@ -45,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         user.password = hash(user.password)
         user.email = user.email.toLowerCase()
         user.role = 'user'
+        if(!user.username) {user.username = user.email}
       },
     },
     sequelize,

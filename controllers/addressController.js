@@ -22,6 +22,11 @@ class Controller {
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }
+    static getById(req, res, next){
+        Address.findOne({where: {user_id: req.params.id}})
+        .then(data => res.status(200).json({message: "success", data}))
+        .catch(err => next(err))
+    }
     static delAddress(req, res, next){
         Address.destroy({where: {id: req.params.id}})
         .then(re => {

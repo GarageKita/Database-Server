@@ -1,5 +1,5 @@
 const {jwtDecrypt} = require("../helpers/jwt")
-const {User, Product, Request} = require('../models/index.js')
+const {User, Product, Request, Offer, Bid} = require('../models/index.js')
 
 const authentication = (req, res, next) =>{
     console.log("in auth2")
@@ -55,4 +55,28 @@ const reqAuth = (req, res, next) => {
         .catch(err => next(err))
 }
 
-module.exports = {authentication, adminAuth, authorization}
+const bidAuth = (req, res, next) => {
+    console.log('in here')
+    if (req.currentUser.role === "admin") {next()}
+    else (
+        Bid.findOne({where:{id: req.params.id}})
+            .then(bid => {
+                console.log(bid)
+                if (bid.consumer_id === req.currentUser.id) {next()}
+                else throw ({name: "unauthorized", message: "You may only modify your own requests"})
+            })
+            .catch(err => next(err))
+    )
+}
+
+const offAuth = (req, res, next) => {
+    if (req.currentUser.role == "admin") {next()}
+    Offer.findOne({where:{id: req.params.id}})
+        .then(data => {
+            if (data.seller_id === req.currentUser.id) {next()}
+            else throw ({name: "unauthorized", message: "You may only modify your own requests"})
+        })
+        .catch(err => next(err))
+}
+
+module.exports = {authentication, adminAuth, bidAuth, prodAuth, reqAuth, offAuth, authorization}

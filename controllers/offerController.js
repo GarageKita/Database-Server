@@ -1,4 +1,4 @@
-const {Offer} = require('../models/index')
+const {Offer, Product} = require('../models/index')
 
 class Controller {
     static postOffer(req, res, next) {
@@ -6,13 +6,23 @@ class Controller {
         newOffer.request_id = req.params.id
         newOffer.seller_id = req.currentUser.id
         newOffer.status = "pending"
-        // console.log(model)
-        Offer.create(newOffer, {returning: true})
+        Product.findOne({where: {product_id: newOffer.product_id}})
+            .then(data => {
+                if (data.seller_id === newOffer.seller_id) return (1)
+                else throw {name: "unauthorized", message:"you can only offer your own products"}
+            })
+            .then (() => Offer.create(newOffer, {returning: true}))
             .then(data => res.status(201).json({message: "success", data}))
             .catch(err => next(err))
-    }
+        }
+
     static putOffer(req, res, next){
-        Offer.update(req.body,{where: {id: req.params.id}, returning:true})
+        Product.findOne({where: {product_id: newOffer.product_id}})
+            .then(data => {
+                if (data.seller_id === newOffer.seller_id) return (1)
+                else throw {name: "unauthorized", message:"you can only offer your own products"}
+            })
+            .then (() => Offer.update(req.body,{where: {id: req.params.id}, returning:true}))
             .then((data) => {
                 if(data[0] == 0) throw {name: "notFound", message: "Category not found"}
                 res.status(200).json({message: "success", data: data[1][0]})
@@ -20,11 +30,13 @@ class Controller {
             .catch(err => next(err))
                 .catch(err => next(err))
     }
+
     static getRequestOffer(req, res, next){
         Offer.findAll({where: {request_id: req.params.id}})
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }
+    
     static getMyOffer(req, res, next){
         Offer.findAll({where: {seller_id: req.currentUser.id}})
         .then(data => res.status(200).json({message: "success", data}))

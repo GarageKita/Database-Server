@@ -4,7 +4,7 @@ const {jwtDecrypt, jwtEncrypt} = require('../helpers/jwt')
 
 class Controller{
     static login(req, res, next){
-        if (!req.body.email || !req.body.password) throw ({name:badRequest, message:"No username or password"})
+        if (!req.body.email || !req.body.password) throw ({name:"badRequest", message:"No username or password"})
         User.findOne({where: {email: req.body.email}})
             .then(user => {
                 if(!user) {throw {name: "notFound"}}
@@ -20,7 +20,7 @@ class Controller{
     }
     
     static register(req, res, next){
-        if (!req.body.email || !req.body.password) throw ({name:badRequest, message:"No username or password"})
+        if (!req.body.email || !req.body.password) throw ({name:"badRequest", message:"No username or password"})
         User.create(req.body)
             .then(() => {
                 console.log('created')

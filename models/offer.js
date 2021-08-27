@@ -17,11 +17,47 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Offer.init({
-    offered_price: DataTypes.INTEGER,
-    request_id: DataTypes.INTEGER,
-    product_id: DataTypes.INTEGER,
-    seller_id: DataTypes.INTEGER,
-    status: DataTypes.STRING
+    offered_price: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {msg: "offered price cannot be empty"},
+        notNull: {msg: "offered price cannot be empty"},
+        min: {args: [0], msg: "cannot offer for less than zero"}
+      },
+      allowNull: false
+    },
+    request_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {msg: "request id cannot be empty"},
+        notNull: {msg: "request id cannot be empty"},
+      },
+      allowNull: false
+    },
+    product_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {msg: "product id cannot be empty"},
+        notNull: {msg: "product id cannot be empty"},
+      },
+      allowNull: false
+    },
+    seller_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {msg: "seller id cannot be empty"},
+        notNull: {msg: "seller id cannot be empty"},
+      },
+      allowNull: false
+    },
+    status: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {msg: "status cannot be empty"},
+        notNull: {msg: "status cannot be empty"},
+      },
+      allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'Offer',
