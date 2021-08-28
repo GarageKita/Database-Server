@@ -21,7 +21,7 @@ app.use((err, req, res, next) => {
     case "SequelizeForeignKeyConstraintError":
     case "notFound":
       statusCode = 404
-      err.message = "notFound"
+      err.message = err.message? err.message : "notFound"
       break;
 
     case "unauthorized":

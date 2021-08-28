@@ -7,6 +7,7 @@ router.post('/:id', authentication, BidsC.postBid)
 router.put('/:id', authentication, bidAuth, BidsC.putBid)
 router.get('/mybids', authentication, BidsC.getMyBids)
 router.get('/:id', authentication, BidsC.getProductBid)
+router.get('/checkbid/:id', authentication, BidsC.getBid)
 router.delete('/:id', authentication, bidAuth, BidsC.delBid)
 
 

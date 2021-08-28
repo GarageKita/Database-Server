@@ -7,6 +7,7 @@ router.post('/:id', authentication, OfferC.postOffer)
 router.put('/:id', authentication, offAuth, OfferC.putOffer)
 router.get('/myoffers', authentication, OfferC.getMyOffer)
 router.get('/:id', authentication, OfferC.getRequestOffer)
+router.get('/checkoffer/:id', authentication, OfferC.getRequestOffer)
 router.delete('/:id', authentication, offAuth, OfferC.delOffer)
 
 

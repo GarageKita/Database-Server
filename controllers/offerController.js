@@ -43,6 +43,20 @@ class Controller {
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }
+    
+    static getOffer(req, res, next){
+        Offer.findOne({where: {id: req.params.id}, include: [{
+            model: User,
+            attributes: ['username']
+        }, Product]})
+        .then(data => 
+            {
+                if (!data) throw {name: "notFound", message: "offer not found"}
+                res.status(200).json({message: "success", data})
+            }
+        )
+        .catch(err => next(err))
+    }
 
     static delOffer(req, res, next){
         Offer.destroy({where: {id: req.params.id}})
