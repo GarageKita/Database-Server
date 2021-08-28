@@ -1,6 +1,7 @@
 const {User} = require('../models/index')
 const {compare} = require('../helpers/bcrypt')
 const {jwtDecrypt, jwtEncrypt} = require('../helpers/jwt')
+const {axios} = require('axios')
 
 class Controller{
     static login(req, res, next){
@@ -23,9 +24,9 @@ class Controller{
         if (!req.body.email || !req.body.password) throw ({name:"badRequest", message:"No username or password"})
         User.create(req.body)
             .then(() => {
-                console.log('created')
-                res.status(201).json({message: "registration success"})
+                axios.post(' https://garage-kita-3rd.herokuapp.com/email/sendactivation/'+req.body.email)
             })
+            .then(() => res.status(201).json({message: "registration success"}))
             .catch(error => {
                 next(error)
             })
