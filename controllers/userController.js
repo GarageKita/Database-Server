@@ -1,7 +1,7 @@
 const {User} = require('../models/index')
 const {compare} = require('../helpers/bcrypt')
 const {jwtDecrypt, jwtEncrypt} = require('../helpers/jwt')
-const {axios} = require('axios')
+const axios = require('axios')
 
 class Controller{
     static login(req, res, next){
@@ -26,7 +26,9 @@ class Controller{
             .then(() => {
                 axios.post(' https://garage-kita-3rd.herokuapp.com/email/sendactivation/'+req.body.email)
             })
-            .then((response) => res.status(201).json(response))
+            .then(() => {
+                res.status(201).json({message: "email sent"})
+            })
             .catch(error => {
                 next(error)
             })
