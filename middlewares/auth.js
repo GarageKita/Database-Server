@@ -66,9 +66,12 @@ const bidAuth = (req, res, next) => {
     else (
         Bid.findOne({where:{id: req.params.id}})
             .then(bid => {
-                console.log(bid)
                 if (bid.consumer_id === req.currentUser.id) {next()}
-                else throw ({name: "unauthorized", message: "You may only modify your own requests"})
+                else {Product.findOne({where: {id: data.product_id}})}
+            })
+            .then (data => {
+                if (data.seller_id === req.currentUser.id) {next()}
+                else throw ({name: "unauthorized", message: "You may only modify your own bids"})
             })
             .catch(err => next(err))
     )
