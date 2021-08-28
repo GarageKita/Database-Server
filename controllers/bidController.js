@@ -1,4 +1,4 @@
-const {Bid} = require('../models/index')
+const {Bid, Product} = require('../models/index')
 
 class Controller {
     static postBid(req, res, next) {
@@ -20,12 +20,12 @@ class Controller {
                 .catch(err => next(err))
     }
     static getProductBid(req, res, next){
-        Bid.findAll({where: {product_id: req.params.id}})
+        Bid.findAll({where: {product_id: req.params.id}, include: Product})
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }
     static getMyBids(req, res, next){
-        Bid.findAll({where: {consumer_id: req.currentUser.id}})
+        Bid.findAll({where: {consumer_id: req.currentUser.id}, include: Product})
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }

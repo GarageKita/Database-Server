@@ -1,4 +1,4 @@
-const {Offer, Product} = require('../models/index')
+const {Offer, User, Product} = require('../models/index')
 
 class Controller {
     static postOffer(req, res, next) {
@@ -32,13 +32,19 @@ class Controller {
     }
 
     static getRequestOffer(req, res, next){
-        Offer.findAll({where: {request_id: req.params.id}})
+        Offer.findAll({where: {request_id: req.params.id}, include: [{
+            model: User,
+            attributes: ['username']
+        }, Product]})
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }
 
     static getMyOffer(req, res, next){
-        Offer.findAll({where: {seller_id: req.currentUser.id}})
+        Offer.findAll({where: {seller_id: req.currentUser.id}, include: [{
+            model: User,
+            attributes: ['username']
+        }, Product]})
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }

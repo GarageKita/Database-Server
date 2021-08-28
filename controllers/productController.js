@@ -1,9 +1,12 @@
-const {Product} = require('../models/index')
+const {Product, User} = require('../models/index')
 
 class Controller{
     static getProducts(req, res, next){
         if(req.params.id){
-            Product.findOne({where: {id: req.params.id}, include: 'Category'})
+            Product.findOne({where: {id: req.params.id}, include: [{
+                model: User,
+                attributes: ['username']
+            }, 'Category']})
             .then(data => {
                 if(req.currentUser){
                     if(data.seller_id === req.currentUser.id){
@@ -22,7 +25,10 @@ class Controller{
             .catch(err => next(err))
         }
         else {
-            Product.findAll({include: 'Category'})
+            Product.findAll({include: [{
+                model: User,
+                attributes: ['username']
+            }, 'Category']})
             .then(data => {
                 data.forEach(el => {
                     delete el.dataValues.priceFloor
@@ -61,7 +67,10 @@ class Controller{
     }
 
     static getMyProducts(req, res, next){
-        Product.findAll({where:{"seller_id": req.currentUser.id}, include: 'Category'})
+        Product.findAll({where:{"seller_id": req.currentUser.id}, include: [{
+            model: User,
+            attributes: ['username']
+        }, 'Category']})
         .then(data => {
             console.log(data)
             res.status(200).json({message: "success", data})

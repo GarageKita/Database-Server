@@ -64,13 +64,11 @@ const reqAuth = (req, res, next) => {
 const bidAuth = (req, res, next) => {
     if (req.currentUser.role === "admin") {next()}
     else (
-        Bid.findOne({where:{id: req.params.id}})
+        Bid.findOne({where:{id: req.params.id}, include: Product})
             .then(bid => {
+                console.log(bid.Product)
                 if (bid.consumer_id === req.currentUser.id) {next()}
-                else {Product.findOne({where: {id: data.product_id}})}
-            })
-            .then (data => {
-                if (data.seller_id === req.currentUser.id) {next()}
+                else if (bid.Product.dataValues.seller_id === req.currentUser.id) {next()}
                 else throw ({name: "unauthorized", message: "You may only modify your own bids"})
             })
             .catch(err => next(err))
@@ -80,13 +78,11 @@ const bidAuth = (req, res, next) => {
 const offAuth = (req, res, next) => {
     if (req.currentUser.role === "admin") {next()}
     else (
-        Offer.findOne({where:{id: req.params.id}})
+        Offer.findOne({where:{id: req.params.id}, include: Request})
             .then(data => {
+                console.log(data)
                 if (data.seller_id === req.currentUser.id) {next()}
-                else {Request.findOne({where: {id: data.request_id}})}
-            })
-            .then(data => {
-                if (data.consumer_id === req.currentUser.id) {next()}
+                else if (bid.Request.dataValues.consumer_id === req.currentUser.id) {next()}
                 else throw ({name: "unauthorized", message: "You may only modify your own offers"})
             })
             .catch(err => next(err))
