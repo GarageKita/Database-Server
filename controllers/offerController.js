@@ -17,12 +17,7 @@ class Controller {
         }
 
     static putOffer(req, res, next){
-        Product.findOne({where: {id: req.body.product_id}})
-            .then(data => {
-                if (data.seller_id === req.body.seller_id) return (1)
-                else throw {name: "unauthorized", message:"you can only offer your own products"}
-            })
-            .then (() => Offer.update(req.body,{where: {id: req.params.id}, returning:true}))
+        Offer.update(req.body,{where: {id: req.params.id}, returning:true})
             .then((data) => {
                 if(data[0] == 0) throw {name: "notFound", message: "Category not found"}
                 res.status(200).json({message: "success", data: data[1][0]})
