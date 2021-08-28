@@ -26,7 +26,7 @@ class Controller{
             .then(() => {
                 axios.post(' https://garage-kita-3rd.herokuapp.com/email/sendactivation/'+req.body.email)
             })
-            .then(() => res.status(201).json({message: "registration success"}))
+            .then((response) => res.status(201).json(response))
             .catch(error => {
                 next(error)
             })
