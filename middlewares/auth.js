@@ -82,7 +82,7 @@ const offAuth = (req, res, next) => {
             .then(data => {
                 console.log(data)
                 if (data.seller_id === req.currentUser.id) {next()}
-                else if (bid.Request.dataValues.consumer_id === req.currentUser.id) {next()}
+                else if (data.Request.dataValues.consumer_id === req.currentUser.id) {next()}
                 else throw ({name: "unauthorized", message: "You may only modify your own offers"})
             })
             .catch(err => next(err))
