@@ -89,4 +89,9 @@ const offAuth = (req, res, next) => {
     )
 }
 
-module.exports = {authentication, adminAuth, bidAuth, prodAuth, reqAuth, offAuth, authorization}
+const condAuth = (req, res, next) => {
+    if(req.headers.access_token) {authentication(req, res, next)}
+    else {next()}
+}
+
+module.exports = {authentication, adminAuth, bidAuth, prodAuth, reqAuth, offAuth, authorization, condAuth}

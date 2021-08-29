@@ -33,6 +33,7 @@ module.exports = class Controller {
                 data.forEach(el => {
                     delete el.dataValues.budgetCeil
                 })
+                if(req.currentUser) {data = data.filter(el => el.consumer_id !== req.currentUser.id)}
                 res.status(200).json({message: "success", data})
             })
             .catch(err => next(err))
@@ -74,7 +75,6 @@ module.exports = class Controller {
             attributes: ['username']
         }, 'Category']})
         .then(data => {
-            console.log(data)
             res.status(200).json({message: "success", data})
         })
         .catch(err => next(err))
@@ -86,7 +86,7 @@ module.exports = class Controller {
             attributes: ['username']
         }, 'Category']})
         .then(data => {
-            console.log(data)
+            if(req.currentUser) {data = data.filter(el => el.consumer_id !== req.currentUser.id)}
             res.status(200).json({message: "success", data})
         })
         .catch(err => next(err))

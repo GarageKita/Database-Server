@@ -33,6 +33,7 @@ class Controller{
                 data.forEach(el => {
                     delete el.dataValues.priceFloor
                 })
+                if(req.currentUser) {data = data.filter(el => el.seller_id = req.currentUser.id)}
                 res.status(200).json({message: "success", data})
             })
             .catch(err => next(err))
@@ -84,7 +85,7 @@ class Controller{
             attributes: ['username']
         }, 'Category']})
         .then(data => {
-            console.log(data)
+            if(req.currentUser) data = data.filter(el => el.seller_id != req.currentUser.id)
             res.status(200).json({message: "success", data})
         })
         .catch(err => next(err))
