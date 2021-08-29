@@ -5,6 +5,7 @@ const {authentication, reqAuth} = require('../middlewares/auth')
 
 router.get('/myrequests', authentication, RequestC.getMyRequest)
 router.get('/', RequestC.getRequest)
+router.get('/category/:id', RequestC.getByCategory)
 router.get('/:id', function(req, res, next) {
     if(req.headers.access_token) {authentication(req, res, next)}
     else {next()}

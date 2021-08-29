@@ -77,6 +77,18 @@ class Controller{
         })
         .catch(err => next(err))
     }
+    
+    static getByCategory(req, res, next){
+        Product.findAll({where:{category_id: req.params.id}, include: [{
+            model: User,
+            attributes: ['username']
+        }, 'Category']})
+        .then(data => {
+            console.log(data)
+            res.status(200).json({message: "success", data})
+        })
+        .catch(err => next(err))
+    }
 }
 
 module.exports = Controller
