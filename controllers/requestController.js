@@ -73,8 +73,11 @@ module.exports = class Controller {
         Request.findAll({where:{"consumer_id": req.currentUser.id}, include: [{
             model: User,
             attributes: ['username']
-        }, 'Category']})
+        }, 'Category', 'Offers']})
         .then(data => {
+            data.forEach(el => {
+                if(el.Offers.some(i => i.offered_price <= el.budgetCeil)) {el.inBudget = true}
+            })
             res.status(200).json({message: "success", data})
         })
         .catch(err => next(err))
