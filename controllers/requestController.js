@@ -1,4 +1,4 @@
-const {Request, User} = require('../models/index')
+const {Request, User, Offer} = require('../models/index')
 const {Op} = require('sequelize')
 
 module.exports = class Controller {
@@ -78,7 +78,7 @@ module.exports = class Controller {
         Request.findAll({where:{"consumer_id": req.currentUser.id}, include: [{
             model: User,
             attributes: ['username']
-        }, 'Category', 'Offers']})
+        }, 'Category', {model: Offer, include:['Product']}]})
         .then(data => {
             data.forEach(el => {
                 if(el.Offers.some(i => i.offered_price <= el.budgetCeil? el.budgetCeil : el.budget)) {el.dataValues.inBudget = true}
