@@ -37,7 +37,7 @@ class Controller{
     static putUser(req, res, next) {
         let data = req.body
         if(req.currentUser.role === "user") {data.role = 'user'}
-        User.update(req.body, {where: {id: req.params.id}})
+        User.update(data, {where: {id: req.params.id}})
             .then(() => res.status(200).json({message: 'success'}))
             .catch(error => next(error))
     }
