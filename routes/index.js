@@ -16,6 +16,7 @@ const {authentication, adminAuth, userAuth} = require('../middlewares/auth')
 router.post('/login', UserC.login)
 router.post('/register', UserC.register)
 router.put('/user/:id', authentication, userAuth, UserC.putUser)
+router.patch('/user/makeadmin', authentication, UserC._TESTONLY_MAKEADMIN)
 
 router.use('/categories', categoryRoute)
 router.use('/requests', requestRoute)

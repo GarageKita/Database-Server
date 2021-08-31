@@ -41,6 +41,12 @@ class Controller{
             .then(() => res.status(200).json({message: 'success'}))
             .catch(error => next(error))
     }
+
+    static _TESTONLY_MAKEADMIN = (req, res, next) => {
+        User.update({role: "admin"}, {where: {id: req.currentUser.id}})
+            .then (() => res.status(200).json({message: "success"}))
+            .catch (error => next(error))
+    }
 }
 
 module.exports = Controller
