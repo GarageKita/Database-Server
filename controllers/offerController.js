@@ -30,7 +30,7 @@ class Controller {
         Offer.findAll({where: {request_id: req.params.id}, include: [{
             model: User,
             attributes: ['username']
-        }, Product]})
+        }, Product], order: [['offered_price', 'ASC']]})
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }

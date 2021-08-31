@@ -55,8 +55,12 @@ module.exports = class Controller {
         Request.update(req.body, {where: {id:req.params.id}, returning: true})
             .then((data) => {
                 if(data[0] == 0) throw({name: "notFound", message: "request not found" })
-                res.status(200).json({message: "success", data: data[1][0]})
+                return Request.findOne({where: {id: req.params.id}, include: [{
+                    model: User,
+                    attributes: ['username']
+                }, 'Category']})     
             })
+            .then(data => res.status(200).json({message: "success", data}))
             .catch(err => next(err))
     }
 
@@ -77,7 +81,7 @@ module.exports = class Controller {
         }, 'Category', 'Offers']})
         .then(data => {
             data.forEach(el => {
-                if(el.Offers.some(i => i.offered_price <= el.budgetCeil)) {el.inBudget = true}
+                if(el.Offers.some(i => i.offered_price <= el.budgetCeil? el.budgetCeil : el.budget)) {el.dataValues.inBudget = true}
             })
             res.status(200).json({message: "success", data})
         })

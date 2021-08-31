@@ -23,7 +23,7 @@ class Controller {
         Bid.findAll({where: {product_id: req.params.id},  include: [{
             model: User,
             attributes: ['username']
-        }, Product]})
+        }, Product], order: [['offered_price', 'DESC']]})
         .then(data => res.status(200).json({message: "success", data}))
         .catch(err => next(err))
     }
