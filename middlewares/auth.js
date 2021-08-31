@@ -21,17 +21,6 @@ const authentication = (req, res, next) =>{
     catch(err) {next(err)}
 }
 
-const authorization = (req, res, next) => {
-    console.log(req.params.id)
-    Cart.findOne({where: {id: req.params.id}})
-        .then(cart => {
-            if(!cart) throw({name: "notFound", message: "Cart not found"})
-            if (cart.UserId == req.currentUser.id) {next()}
-            else (next({name:'unauthorized'}))
-        })
-        .catch(err => next(err))
-}
-
 const adminAuth = (req, res, next) =>{
     if (req.currentUser.role == "admin") {next()}
     else (next({name: "unauthorized"}))
@@ -89,9 +78,21 @@ const offAuth = (req, res, next) => {
     )
 }
 
+const userAuth = (req, res, next) => {
+    if (req.currentUser.role === "admin") {next()}
+    else (
+        User.findOne({where:{id: req.params.id}})
+            .then(user => {
+                if (user.id === req.currentUser.id) {next()}
+                else throw ({name: "unauthorized", message: "You may only modify your own profile"})
+            })
+            .catch(err => next(err))
+    )
+}
+
 const condAuth = (req, res, next) => {
     if(req.headers.access_token) {authentication(req, res, next)}
     else {next()}
 }
 
-module.exports = {authentication, adminAuth, bidAuth, prodAuth, reqAuth, offAuth, authorization, condAuth}
+module.exports = {authentication, adminAuth, bidAuth, prodAuth, reqAuth, offAuth, userAuth, condAuth}

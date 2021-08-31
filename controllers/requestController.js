@@ -1,4 +1,5 @@
 const {Request, User} = require('../models/index')
+const {Op} = require('sequelize')
 
 module.exports = class Controller {
     static getRequest(req, res, next){
@@ -85,6 +86,18 @@ module.exports = class Controller {
     
     static getByCategory(req, res, next){
         Request.findAll({where:{"category_id": req.params.id}, include: [{
+            model: User,
+            attributes: ['username']
+        }, 'Category']})
+        .then(data => {
+            if(req.currentUser) {data = data.filter(el => el.consumer_id !== req.currentUser.id)}
+            res.status(200).json({message: "success", data})
+        })
+        .catch(err => next(err))
+    }
+
+    static searchRequest(req, res, next){
+        Request.findAll({where: {name: {[Op.iLike]: `%${req.params.string}%`}}, include: [{
             model: User,
             attributes: ['username']
         }, 'Category']})

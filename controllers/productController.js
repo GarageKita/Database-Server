@@ -1,4 +1,5 @@
 const {Product, User} = require('../models/index')
+const {Op} = require('sequelize')
 
 class Controller{
     static getProducts(req, res, next){
@@ -84,6 +85,19 @@ class Controller{
     
     static getByCategory(req, res, next){
         Product.findAll({where:{category_id: req.params.id}, include: [{
+            model: User,
+            attributes: ['username']
+        }, 'Category']})
+        .then(data => {
+            if(req.currentUser) data = data.filter(el => el.seller_id !== req.currentUser.id)
+            res.status(200).json({message: "success", data})
+        })
+        .catch(err => next(err))
+    }
+
+    static searchProduct(req, res, next){
+        console.log(req.params.string)
+        Product.findAll({where: {name: {[Op.iLike]: `%${req.params.string}%`}}, include: [{
             model: User,
             attributes: ['username']
         }, 'Category']})

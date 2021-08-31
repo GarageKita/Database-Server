@@ -10,12 +10,12 @@ const bidRoute = require('./bids')
 const offerRoute = require('./offer')
 const addressRoute = require('./address')
 
-const {authentication, adminAuth, authorization} = require('../middlewares/auth')
+const {authentication, adminAuth, userAuth} = require('../middlewares/auth')
 
 // user
 router.post('/login', UserC.login)
 router.post('/register', UserC.register)
-router.put('/user/:id', authentication, adminAuth, UserC.putUser)
+router.put('/user/:id', authentication, userAuth, UserC.putUser)
 
 router.use('/categories', categoryRoute)
 router.use('/requests', requestRoute)
