@@ -2,7 +2,7 @@ const {Bid, Product, User} = require('../models/index')
 
 class Controller {
     static postBid(req, res, next) {
-        const newBid = req.body
+        let newBid = req.body
         newBid.product_id = req.params.id
         newBid.consumer_id = req.currentUser.id
         newBid.status = "pending"

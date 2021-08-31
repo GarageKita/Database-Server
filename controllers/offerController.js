@@ -2,12 +2,13 @@ const {Offer, User, Product} = require('../models/index')
 
 class Controller {
     static postOffer(req, res, next) {
-        const newOffer = req.body
+        let newOffer = req.body
         newOffer.request_id = req.params.id
         newOffer.seller_id = req.currentUser.id
         newOffer.status = "pending"
         Product.findOne({where: {id: newOffer.product_id}})
             .then(data => {
+                if(data[0] == 0) throw {name: "notFound", message: "Product not found"}
                 if (data.seller_id === newOffer.seller_id) return (1)
                 else throw {name: "unauthorized", message:"you can only offer your own products"}
             })
@@ -19,7 +20,7 @@ class Controller {
     static putOffer(req, res, next){
         Offer.update(req.body,{where: {id: req.params.id}, returning:true})
             .then((data) => {
-                if(data[0] == 0) throw {name: "notFound", message: "Category not found"}
+                if(data[0] == 0) throw {name: "notFound", message: "Offer not found"}
                 res.status(200).json({message: "success", data: data[1][0]})
             })
             .catch(err => next(err))

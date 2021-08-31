@@ -69,7 +69,6 @@ const offAuth = (req, res, next) => {
     else (
         Offer.findOne({where:{id: req.params.id}, include: Request})
             .then(data => {
-                console.log(data.Request.dataValues.consumer_id)
                 if (data.seller_id === req.currentUser.id) {next()}
                 else if (data.Request.dataValues.consumer_id === req.currentUser.id) {next()}
                 else throw ({name: "unauthorized", message: "You may only modify your own offers"})

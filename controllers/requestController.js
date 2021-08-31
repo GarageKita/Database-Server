@@ -11,7 +11,7 @@ module.exports = class Controller {
             .then(data => {
                 if(req.currentUser){
                     if(data.id === req.currentUser.id){
-                        res.status(200).json({message: "sucsess", data})
+                        res.status(200).json({message: "success", data})
                     }
                     else {
                         delete data.budgetCeil
